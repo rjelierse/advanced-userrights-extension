@@ -24,8 +24,8 @@ if (!defined ('MEDIAWIKI'))
 $wgExtensionCredits['specialpage'][] = array (
 	'name'           => 'Advanced Userrights',
 	'author'         => '[http://www.wikid.eu/index.php/User:Rjelierse Raymond&nbsp;Jelierse]',
-	'version'        => '0.1.2 (2008-07-08)',
-	'url'            => 'http://www.wikid.eu/index.php/WikID:Extensions',
+	'version'        => '0.2.0 (2008-07-08)',
+	'url'            => 'http://code.google.com/p/advanced-userrights-extension/',
 	'descriptionmsg' => 'advanceduserrights-desc',
 );
 
@@ -47,10 +47,6 @@ require_once dirname (__FILE__) . '/AdvancedUserrights.hooks.php';
 // View information about users
 $wgAvailableRights[] = 'userinfo';
 $wgGroupPermissions['userinfo']['userinfo'] = true;
-// View IP-addresses of users
-$wgAvailableRights[] = 'checkip';
-$wgGroupPermissions['checkip']['checkip'] = true;
-$wgGroupPermissions['checkip']['userinfo'] = true;
 // Set up language
 $wgExtensionMessagesFiles['UserInformation'] = dirname (__FILE__) . '/UserInformation.i18n.php';
 // Set up special page
@@ -59,8 +55,19 @@ $wgSpecialPageGroups['UserInformation'] = 'users';
 $wgAutoloadClasses['UserInformationPage'] = dirname (__FILE__) . '/UserInformation.body.php';
 // Set up hooks
 $wgHooks['SkinTemplateNavUrls'][] = 'userinfo_onSkinTemplateNavUrls';
-$wgHooks['AddNewAccount'][] = 'userinfo_UpdateCheckUserTable';
-$wgHooks['AutoAuthenticate'][] = 'userinfo_UpdateCheckUserTable';
+//
+// Check IP
+if (!isset ($auEnableCheckIP)) $auEnableCheckIP = false;
+if ($auEnableCheckIP)
+{
+	// Permission group
+	$wgAvailableRights[] = 'checkip';
+	$wgGroupPermissions['checkip']['checkip'] = true;
+	$wgGroupPermissions['checkip']['userinfo'] = true;
+	// Hooks
+	$wgHooks['AddNewAccount'][] = 'userinfo_UpdateCheckUserTable';
+	$wgHooks['AutoAuthenticate'][] = 'userinfo_UpdateCheckUserTable';
+}
 // Include hook functions
 require_once dirname (__FILE__) . '/UserInformation.hooks.php';
 

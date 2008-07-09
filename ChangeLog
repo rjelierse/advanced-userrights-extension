@@ -1,0 +1,25 @@
+2008-07-09  Raymond Jelierse  <eagletitan@gmail.com>
+	* AdvancedUserrights.php ($auEnableCheckIP): New configuration
+	setting.
+	* UserInformation.body.php (UserInformationPage::execute): Added check
+	for $auEnableCheckIP.
+
+2008-07-08  Raymond Jelierse  <eagletitan@gmail.com>
+	* UserInformation.{body.php,hooks.php,i18n.php,patch,php}: Split off
+	classes and other functionality to new files.
+	* UserInformation.hooks.php (userinfo_UpdateCheckUserTable): New
+	function.
+	* UserInformation.body.php (UserInformationPage::execute): Extra
+	information fields added, and conditional list of known IP-addresses.
+
+2008-07-05  Raymond Jelierse  <eagletitan@gmail.com>
+	* AdvancedUserrights.{hooks.php,patch): New file.
+	* AdvancedUserrights.hooks.php (userrights_onSkinTemplateNavUrls): New
+	function.
+	* AdvancedUserrights.hooks.php (userinfo_onSkinTemplateNavUrls): New
+	function.
+
+2008-06-22  Raymond Jelierse  <eagletitan@gmail.com>
+	* AdvancedUserrights.{body.php,css,i18n.php,js,php}: New files.
+	* AdvancedUserrights.body.php (AdvancedUserrightsPage::): New class.
+	* AdvancedUserrights.body.php (UserInformationPage::): New class.

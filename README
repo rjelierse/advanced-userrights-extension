@@ -1,0 +1,33 @@
+Advanced Userrights
+A MediaWiki extension created by Raymond Jelierse.
+
+Current version: 0.2.0
+Last update: 2008-07-08
+
+This extension is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; version 2 of the License.
+
+The Advanced Userrights extension adds extra functionality to MediaWiki for managing group memberships and viewing information about users.
+
+==Features==
+* Sortable list of users.
+* Intuitive group membership management.
+* IP-logging of registered users.
+
+==Installation==
+Place the contents of this directory in the extensions/AdvancedUserrights/-directory of your MediaWiki installation.
+Navigate to your MediaWiki root directory and apply the patch:
+    patch -p0 extensions/AdvancedUserrights/UserInformation.patch
+Add the following line to your LocalSettings.php:
+    require_once ("$IP/extensions/AdvancedUserrights/AdvancedUserrights.php");
+
+==Settings==
+Advanced Userrights has the following configurable settings:
+
+$auEnableCheckIP = bool (default = false)
+	If set to true, this will log the IP-address of every registered user 
+	that visits your wiki, and it will also record the last time that the 
+	user visited from that IP-address.
+	NOTE: This setting needs to be set before the require_once statement.
+
