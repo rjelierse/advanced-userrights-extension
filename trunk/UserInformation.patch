@@ -1,0 +1,19 @@
+--- includes/SkinTemplate.php	2008-07-05 19:19:06.000000000 +0200
++++ includes/SkinTemplate.php.old	2008-07-05 19:18:15.000000000 +0200
+@@ -136,6 +136,7 @@
+ 		global $wgUseTrackbacks;
+ 		global $wgArticlePath, $wgScriptPath, $wgServer, $wgLang, $wgCanonicalNamespaceNames;
+ 
++
+ 		$fname = 'SkinTemplate::outputPage';
+ 		wfProfileIn( $fname );
+ 
+@@ -944,8 +945,6 @@
+ 				'href' => self::makeSpecialUrlSubpage( 'Emailuser', $this->mTitle->getText() )
+ 			);
+ 		}
+-
+-		wfRunHooks( 'SkinTemplateNavUrls', array( &$nav_urls ) );
+ 		
+ 		wfProfileOut( $fname );
+ 		return $nav_urls;

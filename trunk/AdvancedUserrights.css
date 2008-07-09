@@ -1,0 +1,65 @@
+/**
+ * User rights table 
+ */
+table.userrights {
+	width: 100%;
+	font-size: 10pt;
+	border: 1px solid #ccc;
+	padding: 1px;
+}
+table.userrights th {
+	text-align: left;
+	background-color: #ccc;
+	color: #000;
+	cursor: default;
+	line-height: 14pt;
+}
+table.userrights th a {
+	color: #000;
+	text-decoration: none;
+}
+/* Sort headers */
+table.userrights th a.sortNone {
+	background: url('/skins/common/images/sort_none.gif') center left no-repeat;
+	padding-left: 14px;
+}
+table.userrights th a.sortDesc {
+	background: url('/skins/common/images/sort_up.gif') center left no-repeat;
+	padding-left: 14px;
+}
+table.userrights th a.sortAsc {
+	background: url('/skins/common/images/sort_down.gif') center left no-repeat;
+	padding-left: 14px;
+}
+/* Columns */
+table.userrights td.colCheck {
+	width: 25px;
+	text-align: center;
+}
+table.userrights td.colUsername {
+	width: 150px;
+	text-align: left;
+}
+table.userrights td.colGroups {
+	text-align: left;
+}
+table.userrights td.colRegistered {
+	width: 200px;
+	text-align: left;
+}
+table.userrights th.colEdits,
+table.userrights td.colEdits {
+	width: 100px;
+	text-align: right;
+}
+table.userrights td.colOptions {
+	width: 75px;
+	text-align: right;
+}
+/**
+ * Group membership
+ */
+span.wikid-userrights-explain {
+	font-size: 8pt;
+	color: #666;
+}
