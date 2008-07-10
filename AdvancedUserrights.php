@@ -24,52 +24,66 @@ if (!defined ('MEDIAWIKI'))
 $wgExtensionCredits['specialpage'][] = array (
 	'name'           => 'Advanced Userrights',
 	'author'         => '[http://www.wikid.eu/index.php/User:Rjelierse Raymond&nbsp;Jelierse]',
-	'version'        => '0.2.0 (2008-07-08)',
-	'url'            => 'http://code.google.com/p/advanced-userrights-extension/',
+	'version'        => '0.1.2 (2008-07-08)',
+	'url'            => 'http://www.wikid.eu/index.php/WikID:Extensions',
 	'descriptionmsg' => 'advanceduserrights-desc',
 );
 
-// Special:AdvancedUserrights
-//
-// Set up language
-$wgExtensionMessagesFiles['AdvancedUserrights'] = dirname (__FILE__) . '/AdvancedUserrights.i18n.php';
-// Set up special page
-$wgSpecialPages['AdvancedUserrights'] = 'AdvancedUserrightsPage';
-$wgSpecialPageGroups['AdvancedUserrights'] = 'permissions';
-$wgAutoloadClasses['AdvancedUserrightsPage'] = dirname (__FILE__) . '/AdvancedUserrights.body.php';
-// Set up hooks
-$wgHooks['SkinTemplateNavUrls'][] = 'userrights_onSkinTemplateNavUrls';
-// Include hook functions
+/**
+ * Extension setup
+ */
+$wgExtensionFunctions[] = 'efAdvancedUserrightsSetup';
+$wgExtensionFunctions[] = 'efUserInformationSetup';
 require_once dirname (__FILE__) . '/AdvancedUserrights.hooks.php';
 
-// Special:UserInformation
-//
-// View information about users
-$wgAvailableRights[] = 'userinfo';
-$wgGroupPermissions['userinfo']['userinfo'] = true;
-// Set up language
-$wgExtensionMessagesFiles['UserInformation'] = dirname (__FILE__) . '/UserInformation.i18n.php';
-// Set up special page
-$wgSpecialPages['UserInformation'] = 'UserInformationPage';
-$wgSpecialPageGroups['UserInformation'] = 'users';
-$wgAutoloadClasses['UserInformationPage'] = dirname (__FILE__) . '/UserInformation.body.php';
-// Set up hooks
-$wgHooks['SkinTemplateNavUrls'][] = 'userinfo_onSkinTemplateNavUrls';
-//
-// Check IP
-if (!isset ($auEnableCheckIP)) $auEnableCheckIP = false;
-if ($auEnableCheckIP)
+/**
+ * Global configuration settings
+ */
+/**
+ * Enables the logging of IP-addresses for registered users, to allow more effective blocking.
+ *
+ * Disabled by default to prevent possible privacy policy violations.
+ */
+$auEnableCheckIP = false;
+
+/**
+ * Sets up the extension for Special:AdvancedUserrights
+ */
+function efAdvancedUserrightsSetup ()
 {
-	// Permission group
-	$wgAvailableRights[] = 'checkip';
-	$wgGroupPermissions['checkip']['checkip'] = true;
-	$wgGroupPermissions['checkip']['userinfo'] = true;
-	// Hooks
-	$wgHooks['AddNewAccount'][] = 'userinfo_UpdateCheckUserTable';
-	$wgHooks['AutoAuthenticate'][] = 'userinfo_UpdateCheckUserTable';
+	global $wgExtensionMessagesFiles, $wgSpecialPages, $wgSpecialPageGroups, $wgAutoloadClasses, $wgHooks;
+	
+	$wgExtensionMessagesFiles['AdvancedUserrights'] = dirname (__FILE__) . '/AdvancedUserrights.i18n.php';
+	$wgSpecialPages['AdvancedUserrights'] = 'AdvancedUserrightsPage';
+	$wgSpecialPageGroups['AdvancedUserrights'] = 'permissions';
+	$wgAutoloadClasses['AdvancedUserrightsPage'] = dirname (__FILE__) . '/AdvancedUserrights.body.php';
+	$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', 'AdvancedUserrights', 'userrights', 'userrights-editusergroup');
 }
-// Include hook functions
-require_once dirname (__FILE__) . '/UserInformation.hooks.php';
+
+/**
+ * Sets up the extension for Special:UserInformation
+ */
+function efUserInformationSetup ()
+{
+	global $auEnableCheckIP, $wgAvailableRights, $wgGroupPermissiosn, $wgExtensionMessagesFiles, $wgSpecialPages, $wgSpecialPageGroups, $wgAutoloadClasses, $wgHooks;
+	
+	$wgAvailableRights[] = 'userinfo';
+	$wgGroupPermissions['userinfo']['userinfo'] = true;
+	$wgExtensionMessagesFiles['UserInformation'] = dirname (__FILE__) . '/UserInformation.i18n.php';
+	$wgSpecialPages['UserInformation'] = 'UserInformationPage';
+	$wgSpecialPageGroups['UserInformation'] = 'users';
+	$wgAutoloadClasses['UserInformationPage'] = dirname (__FILE__) . '/UserInformation.body.php';
+	$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', 'UserInformation', 'userinfo', 'userinfo-details');
+	
+	if ($auEnableCheckIP)
+	{
+		$wgAvailableRights[] = 'checkip';
+		$wgGroupPermissions['checkip']['checkip'] = true;
+		$wgGroupPermissions['checkip']['userinfo'] = true;
+		$wgHooks['AddNewAccount'][] = 'efUpdateCheckIPTable';
+		$wgHooks['AutoAuthenticate'][] = 'efUpdateCheckIPTable';
+	}
+}
 
 // Debug information since we are developing
 #$wgShowExceptionDetails = true;

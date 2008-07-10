@@ -40,6 +40,13 @@ $messages['en'] = array (
 	'userinfo-noipsfound' => 'No IP-addresses were found for this user.',
 	'userinfo-ipaddress'  => 'IP-address',
 	'userinfo-lastseen'   => 'Last seen at',
+	# IP-address setup
+	'userinfo-setup'              => 'IP-address listing setup',
+	'userinfo-nosetup'            => 'The database has not yet been prepared for using checkip, please complete the <span class="plainlinks">[$1 setup]</span>.', // $1 gets replaced by the link to the setup-page.
+	'userinfo-setup-explain'      => 'A table must be added to the database before IP-address logging can work.',
+	'userinfo-setup-button'       => 'Create table',
+	'userinfo-setup-tableexists'  => 'The table already exists.',
+	'userinfo-setup-tablecreated' => 'The table was successfully created.',
 	# Default userinfo group
 	'group-userinfo'        => 'Account reviewers',
 	'group-userinfo-member' => 'Account reviewer',
