@@ -31,7 +31,7 @@ class UserInformationPage extends SpecialPage
 		
 	public function execute ($par)
 	{
-		global $wgLang, $wgOut, $wgUser;
+		global $auEnableCheckIP, $wgLang, $wgOut, $wgRequest, $wgUser;
 
 		if( !$this->userCanExecute ($wgUser))
 			return $this->displayRestrictionError ();
@@ -40,15 +40,19 @@ class UserInformationPage extends SpecialPage
 		
 		$this->setHeaders ();
 		
-		if (empty ($par))
-			return $wgOut->redirect ();
+		$this->db = wfGetDB (DB_SLAVE);
 		
+		if ($wgRequest->getCheck ('setup'))
+			return $this->setup ();
+		
+		if (empty ($par))
+			return $this->displayRestrictionError ();
+				
 		list (/* $prefix */, $user_name) = explode (':', $par, 2);
 		
 		$wgOut->setPageTitle (wfMsg ('userinfo-viewing', $user_name));
 		
-		$dbr = wfGetDB (DB_SLAVE);
-		$user = $dbr->selectRow ('user', '*', array ('user_name' => $user_name), __METHOD__);
+		$user = $this->db->selectRow ('user', '*', array ('user_name' => $user_name), __METHOD__);
 		
 		// Status messages
 		if (empty ($user->user_email))
@@ -72,31 +76,74 @@ class UserInformationPage extends SpecialPage
 		
 		$wgOut->addHTML ($table);
 		
-		if ($wgUser->isAllowed ('checkip'))
+		if ($auEnableCheckIP && $wgUser->isAllowed ('checkip'))
+			$this->getKnownAddresses ();
+	}
+	
+	private function getKnownAddresses ()
+	{
+		global $wgOut;
+		
+		$wgOut->addHTML (Xml::element ('h2', NULL, wfMsg ('userinfo-iplist')));
+		
+		#if (!$this->db->tableExists ('user_checkip'))
+			/*return*/ $wgOut->addWikiText (wfMsg ('userinfo-nosetup', SpecialPage::getTitle()->getFullURL ('setup=1')));
+		
+		$res = $this->db->select ('user_checkip', array ('user_ip', 'cu_touched'), array ('user_id' => $user->user_id), __METHOD__);
+		
+		if ($this->db->numRows ($res) == 0)
+			return $wgOut->addHTML (wfMsg ('userinfo-noipsfound'));
+		
+		$list  = Xml::openElement ('table', array ('style' => 'width: 100%; text-align: left;'));
+		$list .= Xml::openElement ('tr');
+		$list .= Xml::element ('th', array ('width' => '33%'), wfMsg ('userinfo-ipaddress'));
+		$list .= Xml::element ('th', NULL, wfMsg ('userinfo-lastseen'));
+		$list .= Xml::closeElement ('tr');
+		while ($row = $this->db->fetchObject ($res))
 		{
-			$res = $dbr->select ('user_checkip', array ('user_ip', 'cu_touched'), array ('user_id' => $user->user_id), __METHOD__);
-			
-			$wgOut->addHTML (Xml::element ('h2', NULL, wfMsg ('userinfo-iplist')));
-			if ($dbr->numRows ($res) == 0)
-				$wgOut->addHTML (wfMsg ('userinfo-noipsfound'));
+			$list .= Xml::openElement ('tr');
+			$list .= Xml::element ('td', NULL, $row->user_ip);
+			$list .= Xml::element ('td', NULL, $wgLang->timeanddate ($row->cu_touched));
+			$list .= Xml::closeElement ('tr');
+		}
+		$list .= Xml::closeElement ('table');
+		
+		$wgOut->addHTML ($list);
+	}
+	
+	private function setup ()
+	{
+		global $wgOut, $wgRequest;
+		
+		$wgOut->setPageTitle (wfMsg ('userinfo-setup'));
+		
+		if ($wgRequest->wasPosted ())
+		{
+			if ($this->db->tableExists ('user_checkip'))
+				$wgOut->addHTML ('<p>' . wfMsg ('userinfo-setup-tableexists') . '</p>');
 			else
 			{
-				$list  = Xml::openElement ('table', array ('style' => 'width: 100%; text-align: left;'));
-				$list .= Xml::openElement ('tr');
-				$list .= Xml::element ('th', array ('width' => '33%'), wfMsg ('userinfo-ipaddress'));
-				$list .= Xml::element ('th', NULL, wfMsg ('userinfo-lastseen'));
-				$list .= Xml::closeElement ('tr');
-				while ($row = $dbr->fetchObject ($res))
-				{
-					$list .= Xml::openElement ('tr');
-					$list .= Xml::element ('td', NULL, $row->user_ip);
-					$list .= Xml::element ('td', NULL, $wgLang->timeanddate ($row->cu_touched));
-					$list .= Xml::closeElement ('tr');
-				}
-				$list .= Xml::closeElement ('table');
-				
-				$wgOut->addHTML ($list);
+				$tableName = $this->db->tableName ('user_checkip');
+				$sql = "CREATE TABLE $tableName (
+				            cu_id int(7) unsigned NOT NULL auto_increment,
+							user_id int(5) unsigned NOT NULL default '0',
+							user_ip varchar(255) NOT NULL default '',
+							user_ip_hex varchar(255) default NULL,
+							user_xff varchar(255) NOT NULL default '',
+							user_xff_hex varchar(255) default NULL,
+							cu_touched varchar(14) NOT NULL default '',
+							PRIMARY KEY (cu_id),
+							UNIQUE KEY unique_location (user_id, user_ip_hex)
+						);";
+				$this->db->query ($sql, __METHOD__);
+				$wgOut->addHTML ('<p>' . wfMsg ('userinfo-setup-tablecreated') . '</p>');
 			}
+			$wgOut->addReturnTo (SpecialPage::getTitle());
+		}
+		else
+		{
+			$wgOut->addHTML ('<p>' . wfMsg ('userinfo-setup-explain') . '</p>');
+			$wgOut->addHTML ('<form method="post"><input type="submit" value="' . wfMsg ('userinfo-setup-button') . '" /></form>');
 		}
 	}
 	
