@@ -24,8 +24,8 @@ if (!defined ('MEDIAWIKI'))
 $wgExtensionCredits['specialpage'][] = array (
 	'name'           => 'Advanced Userrights',
 	'author'         => '[http://www.wikid.eu/index.php/User:Rjelierse Raymond&nbsp;Jelierse]',
-	'version'        => '0.1.2 (2008-07-08)',
-	'url'            => 'http://www.wikid.eu/index.php/WikID:Extensions',
+	'version'        => '0.2.1 (2008-07-10)',
+	'url'            => 'http://code.google.com/p/advanced-userrights-extension/',
 	'descriptionmsg' => 'advanceduserrights-desc',
 );
 
@@ -57,7 +57,7 @@ function efAdvancedUserrightsSetup ()
 	$wgSpecialPages['AdvancedUserrights'] = 'AdvancedUserrightsPage';
 	$wgSpecialPageGroups['AdvancedUserrights'] = 'permissions';
 	$wgAutoloadClasses['AdvancedUserrightsPage'] = dirname (__FILE__) . '/AdvancedUserrights.body.php';
-	$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', 'AdvancedUserrights', 'userrights', 'userrights-editusergroup');
+	$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('AdvancedUserrights', 'userrights', 'userrights-editusergroup'));
 }
 
 /**
@@ -73,7 +73,7 @@ function efUserInformationSetup ()
 	$wgSpecialPages['UserInformation'] = 'UserInformationPage';
 	$wgSpecialPageGroups['UserInformation'] = 'users';
 	$wgAutoloadClasses['UserInformationPage'] = dirname (__FILE__) . '/UserInformation.body.php';
-	$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', 'UserInformation', 'userinfo', 'userinfo-details');
+	$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('UserInformation', 'userinfo', 'userinfo-details'));
 	
 	if ($auEnableCheckIP)
 	{
