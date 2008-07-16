@@ -9,6 +9,17 @@
 	* UserInformation.body.php (UserInformationPage::execute): Fixed
 	username parameter to use default style as used in MediaWiki.
 
+	Added extra options to the user list.
+	* AdvancedUserrights.php: Updated calls to hooks.
+	* AdvancedUserrights.body.php (AdvancedUserrightsPage::userListForm):
+	Added routine for easily adding user options.
+	* AdvancedUserrights.body.php (AdvancedUserrightsPage::mUserOptions):
+	Array containing available options.
+	* AdvancedUserrights.css: Expanded userOptions column.
+	* AdvancedUserrights.i18n.php: Updated language strings.
+	* UserInformation.i18n.php: Updated language strings.
+	* images/user-sendmail.png: New file.
+
 2008-07-10  Raymond Jelierse  <eagletitan@gmail.com>
 	* AdvancedUserrights.php: Rewrote entire file to allow configuration
 	by user.

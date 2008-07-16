@@ -38,6 +38,26 @@ class AdvancedUserrightsPage extends SpecialPage
 	var $mSort;
 	var $mDefaultOrder = 'asc';
 	var $mOrder;
+	// Actions
+	var $mUserOptions = array (
+		'UserInformation' => array (
+			'desc'  => 'tooltip-t-userinfo',
+			'image' => 'user-information.png'
+		),
+		'AdvancedUserrights' => array (
+			'desc'  => 'tooltip-t-userrights',
+			'image' => 'group-management.png'
+		),
+		'Contributions' => array (
+			'desc'  => 'tooltip-t-contributions',
+			'image' => 'user-contributions.png'
+		),
+		'Emailuser' => array (
+			'desc'  => 'tooltip-t-emailuser',
+			'image' => 'user-sendmail.png'
+		),
+	);
+	// Group management
 	var $mDisplayedRights = array ('block', 'checkip', 'delete', 'bigdelete', 'undelete', 'editinterface', 'import', 'importupload', 'import-wizard', 'move', 'protect', 'rollback', 'upload', 'reupload', 'userinfo', 'userrights');
 		
 	public function __construct ()
@@ -202,7 +222,10 @@ class AdvancedUserrightsPage extends SpecialPage
 				$groups = '';
 			
 			$userRegistration = $wgLang->timeanddate ($row->user_registration);
-			$userInfoLink = SpecialPage::getTitleFor ('UserInformation', $userPage)->getLocalURL();
+			
+			$userOptions = array ();
+			foreach ($this->mUserOptions as $page => $options)
+				$userOptions[] = Xml::tags ('a', array ('href' => SpecialPage::getTitleFor ($page, $userPage)->getLocalURL()), Xml::element ('img', array ('alt' => wfMsg ($options['desc']), 'title' => wfMsg ($options['desc']), 'src' => self::getImagePath ($options['image']))));
 			
 			$table .= '<tr>';
 			$table .= Xml::tags ('td', array ('class' => 'colCheck'), Xml::check ('userChecked[' . $row->user_id . ']', false));
@@ -210,8 +233,7 @@ class AdvancedUserrightsPage extends SpecialPage
 			$table .= Xml::tags ('td', array ('class' => 'colGroups'), $groups);
 			$table .= Xml::element ('td', array ('class' => 'colRegistered'), $userRegistration);
 			$table .= Xml::element ('td', array ('class' => 'colEdits'), intval ($row->user_editcount));
-			$table .= Xml::tags ('td', array ('class' => 'colOptions'), Xml::tags ('a', array ('href' => SpecialPage::getTitleFor ('UserInformation', $userPage)->getLocalURL()), Xml::element('img', array ('alt' => wfMsg ('userinformation'), 'title' => wfMsg ('userinformation'), 'src' => self::getImagePath('user-information.png'))))
-			             . '&nbsp;|&nbsp;' . Xml::tags ('a', array ('href' => SpecialPage::getTitle ($userPage)->getLocalURL()), Xml::element('img', array ('alt' => wfMsg ('advanceduserrights-groupchange'), 'title' => wfMsg ('userrights-editusergroup'), 'src' => self::getImagePath('group-management.png')))));
+			$table .= Xml::tags ('td', array ('class' => 'colOptions'), implode ('&nbsp;|&nbsp;', $userOptions));
 			$table .= '</tr>';
 		}
 

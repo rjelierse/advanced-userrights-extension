@@ -24,33 +24,31 @@ if (!defined ('MEDIAWIKI'))
 $messages = array ();
 
 $messages['en'] = array (
-	# User rights
 	'advanceduserrights'         => 'Advanced user rights management',
 	'advanceduserrights-desc'    => 'Advanced user rights management to replace the default user rights manager in MediaWiki',
 	'advanceduserrights-submit'  => 'Save group memberships',
 	'advanceduserrights-groupchange-explained' => 'Check each group you want this user to be a member of. Unchecking a currently checked group will remove the group membership. Behind every group the rights that a group has are listed.',
-	// Note: $1 gets replaced by 'group-bureaucrat' and $2 by 'group-sysop'.
 	'advanceduserrights-groupchanged' => 'Succesfully stored group memberships for user $1',
-	# Toolbar
+	// Toolbar
 	'advanceduserrights-withselected' => 'With selected...',
-	# Actions
-	'advanceduserrights-groupadd'       => 'Add to group',
+	// Actions
 	'advanceduserrights-groupchange'    => 'Change group memberships',
 	'advanceduserrights-groupchangefor' => 'Change group memberships for $1', // $1 gets replaced by username.
-	'advanceduserrights-groupremove'    => 'Remove from group',
-	'advanceduserrights-blockuser'      => 'Block user',
-	# Table headers
+	// Table headers
 	'advanceduserrights-username'         => 'Username',
 	'advanceduserrights-groups'           => 'Groups',
 	'advanceduserrights-registrationdate' => 'Registration date',
 	'advanceduserrights-editcount'        => '# of edits',
-	# Error messages
+	// Error messages
 	'advanceduserrights-errornoselection' => 'No users selected! You have to select at least one user.',
 	'advanceduserrights-errorselectone'   => 'Please select a single user.',
-	# Navigation
+	// Navigation
 	'nav-start' => 'first',
 	'nav-prev'  => 'previous $1', // $1 gets replaced by the number of items per page.
 	'nav-next'  => 'next $1', // $1 gets replaced by the number of items per page.
 	'nav-end'   => 'last',
+	// Toolbox items
+	'tooltip-t-userinfo'   => 'View information about this user',
+	'tooltip-t-userrights' => 'Manage this user\'s permissions',
 );
 ?>
