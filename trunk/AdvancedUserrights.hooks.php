@@ -20,9 +20,11 @@
 if (!defined ('MEDIAWIKI'))
 	die ();
 
-function efSkinTemplateNavUrls ($specialPage, $permission, $name, &$nav_urls)
+function efSkinTemplateNavUrls ($args, &$nav_urls)
 {
 	global $wgUser, $wgTitle;
+	// Stoopid hooks system only allows for one argument
+	list ($specialPage, $permission, $name) = $args;
 		
 	if (!$wgUser->isAllowed ($permission))
 		return true;
@@ -31,7 +33,7 @@ function efSkinTemplateNavUrls ($specialPage, $permission, $name, &$nav_urls)
 	{
 		wfLoadExtensionMessages ($specialPage);
 		
-		$page = SpecialPage::getTitleFor($specialPage, $wgTitle->getPrefixedText());
+		$page = SpecialPage::getTitleFor($specialPage, $wgTitle->getText());
 		$nav_urls[$name] = array (
 			'href' => $page->getLocalURL()
 		);
@@ -44,7 +46,13 @@ function efSkinTemplateNavUrls ($specialPage, $permission, $name, &$nav_urls)
 
 function efUpdateCheckIPTable (&$user, &$byEmail = false)
 {
-	global $wgOut;
+	global $auEnableCheckIP, $wgOut;
+	
+	if ($auEnableCheckIP)
+	{
+		$wgOut->debug ("CheckIP disabled. Returning.\n\n");
+		return true;
+	}
 	
 	// Get user ID
 	$id = $user->getID ();

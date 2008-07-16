@@ -48,11 +48,17 @@ class UserInformationPage extends SpecialPage
 		if (empty ($par))
 			return $this->displayRestrictionError ();
 				
-		list (/* $prefix */, $user_name) = explode (':', $par, 2);
+		if (strpos ($par, 'User:') === 0)
+			list (/* $prefix */, $userName) = explode (':', $par, 2);
+		else
+			$userName = $par;
 		
-		$wgOut->setPageTitle (wfMsg ('userinfo-viewing', $user_name));
+		$user = $this->db->selectRow ('user', '*', array ('user_name' => $userName), __METHOD__);
 		
-		$user = $this->db->selectRow ('user', '*', array ('user_name' => $user_name), __METHOD__);
+		if ($user === false)
+			return $wgOut->showErrorPage ('userinformation', 'nosuchusershort', array ($userName));
+		
+		$wgOut->setPageTitle (wfMsg ('userinfo-viewing', $userName));
 		
 		// Status messages
 		if (empty ($user->user_email))
@@ -77,17 +83,17 @@ class UserInformationPage extends SpecialPage
 		$wgOut->addHTML ($table);
 		
 		if ($auEnableCheckIP && $wgUser->isAllowed ('checkip'))
-			$this->getKnownAddresses ();
+			$this->getKnownAddresses ($user);
 	}
 	
-	private function getKnownAddresses ()
+	private function getKnownAddresses ($user)
 	{
-		global $wgOut;
+		global $wgLang, $wgOut;
 		
 		$wgOut->addHTML (Xml::element ('h2', NULL, wfMsg ('userinfo-iplist')));
 		
-		#if (!$this->db->tableExists ('user_checkip'))
-			/*return*/ $wgOut->addWikiText (wfMsg ('userinfo-nosetup', SpecialPage::getTitle()->getFullURL ('setup=1')));
+		if (!$this->db->tableExists ('user_checkip'))
+			return $wgOut->addWikiText (wfMsg ('userinfo-nosetup', SpecialPage::getTitle()->getFullURL ('setup=1')));
 		
 		$res = $this->db->select ('user_checkip', array ('user_ip', 'cu_touched'), array ('user_id' => $user->user_id), __METHOD__);
 		

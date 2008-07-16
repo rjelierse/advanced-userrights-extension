@@ -66,9 +66,12 @@ class AdvancedUserrightsPage extends SpecialPage
 		
 		if (!empty ($par))
 		{
-			list (/* $prefix */, $user_name) = explode (':', $par, 2);
+			if (strpos ($par, 'User:') === 0)
+				list (/* $prefix */, $userName) = explode (':', $par, 2);
+			else
+				$userName = $par;
 			
-			return $this->userGroupManagementForm ($user_name);
+			return $this->userGroupManagementForm ($userName);
 		}
 					
 		if ($wgRequest->wasPosted())

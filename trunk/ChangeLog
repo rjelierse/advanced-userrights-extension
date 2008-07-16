@@ -1,3 +1,14 @@
+2008-07-16  Raymond Jelierse  <eagletitan@gmail.com>
+	* AdvancedUserrights.hooks.php (efSkinTemplateNavUrls): Fixed list of
+	parameters as MediaWiki does not allow more than one user supplied
+	parameter.
+	* AdvancedUserrights.php: Removed entries for $wgExtensionFunctions,
+	as these can not be used to setup the special pages.
+	* AdvancedUserrights.body.php (AdvancedUserrightsPage::execute): Fixed
+	username parameter to use default style as used in MediaWiki.
+	* UserInformation.body.php (UserInformationPage::execute): Fixed
+	username parameter to use default style as used in MediaWiki.
+
 2008-07-10  Raymond Jelierse  <eagletitan@gmail.com>
 	* AdvancedUserrights.php: Rewrote entire file to allow configuration
 	by user.

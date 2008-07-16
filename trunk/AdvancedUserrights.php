@@ -32,8 +32,25 @@ $wgExtensionCredits['specialpage'][] = array (
 /**
  * Extension setup
  */
-$wgExtensionFunctions[] = 'efAdvancedUserrightsSetup';
-$wgExtensionFunctions[] = 'efUserInformationSetup';
+$wgExtensionMessagesFiles['AdvancedUserrights'] = dirname (__FILE__) . '/AdvancedUserrights.i18n.php';
+$wgSpecialPages['AdvancedUserrights'] = 'AdvancedUserrightsPage';
+$wgSpecialPageGroups['AdvancedUserrights'] = 'permissions';
+$wgAutoloadClasses['AdvancedUserrightsPage'] = dirname (__FILE__) . '/AdvancedUserrights.body.php';
+$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('AdvancedUserrights', 'userrights', 'userrights-editusergroup'));
+
+$wgExtensionMessagesFiles['UserInformation'] = dirname (__FILE__) . '/UserInformation.i18n.php';
+$wgSpecialPages['UserInformation'] = 'UserInformationPage';
+$wgSpecialPageGroups['UserInformation'] = 'users';
+$wgAutoloadClasses['UserInformationPage'] = dirname (__FILE__) . '/UserInformation.body.php';
+$wgAvailableRights[] = 'userinfo';
+$wgGroupPermissions['userinfo']['userinfo'] = true;
+$wgAvailableRights[] = 'checkip';
+$wgGroupPermissions['checkip']['checkip'] = true;
+$wgGroupPermissions['checkip']['userinfo'] = true;
+$wgHooks['AddNewAccount'][] = 'efUpdateCheckIPTable';
+$wgHooks['AutoAuthenticate'][] = 'efUpdateCheckIPTable';
+$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('UserInformation', 'userinfo', 'userinfo-details'));
+
 require_once dirname (__FILE__) . '/AdvancedUserrights.hooks.php';
 
 /**
@@ -45,45 +62,6 @@ require_once dirname (__FILE__) . '/AdvancedUserrights.hooks.php';
  * Disabled by default to prevent possible privacy policy violations.
  */
 $auEnableCheckIP = false;
-
-/**
- * Sets up the extension for Special:AdvancedUserrights
- */
-function efAdvancedUserrightsSetup ()
-{
-	global $wgExtensionMessagesFiles, $wgSpecialPages, $wgSpecialPageGroups, $wgAutoloadClasses, $wgHooks;
-	
-	$wgExtensionMessagesFiles['AdvancedUserrights'] = dirname (__FILE__) . '/AdvancedUserrights.i18n.php';
-	$wgSpecialPages['AdvancedUserrights'] = 'AdvancedUserrightsPage';
-	$wgSpecialPageGroups['AdvancedUserrights'] = 'permissions';
-	$wgAutoloadClasses['AdvancedUserrightsPage'] = dirname (__FILE__) . '/AdvancedUserrights.body.php';
-	$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('AdvancedUserrights', 'userrights', 'userrights-editusergroup'));
-}
-
-/**
- * Sets up the extension for Special:UserInformation
- */
-function efUserInformationSetup ()
-{
-	global $auEnableCheckIP, $wgAvailableRights, $wgGroupPermissiosn, $wgExtensionMessagesFiles, $wgSpecialPages, $wgSpecialPageGroups, $wgAutoloadClasses, $wgHooks;
-	
-	$wgAvailableRights[] = 'userinfo';
-	$wgGroupPermissions['userinfo']['userinfo'] = true;
-	$wgExtensionMessagesFiles['UserInformation'] = dirname (__FILE__) . '/UserInformation.i18n.php';
-	$wgSpecialPages['UserInformation'] = 'UserInformationPage';
-	$wgSpecialPageGroups['UserInformation'] = 'users';
-	$wgAutoloadClasses['UserInformationPage'] = dirname (__FILE__) . '/UserInformation.body.php';
-	$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('UserInformation', 'userinfo', 'userinfo-details'));
-	
-	if ($auEnableCheckIP)
-	{
-		$wgAvailableRights[] = 'checkip';
-		$wgGroupPermissions['checkip']['checkip'] = true;
-		$wgGroupPermissions['checkip']['userinfo'] = true;
-		$wgHooks['AddNewAccount'][] = 'efUpdateCheckIPTable';
-		$wgHooks['AutoAuthenticate'][] = 'efUpdateCheckIPTable';
-	}
-}
 
 // Debug information since we are developing
 #$wgShowExceptionDetails = true;
