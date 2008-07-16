@@ -48,11 +48,11 @@ $messages['en'] = array (
 	'userinfo-setup-tableexists'  => 'The table already exists.',
 	'userinfo-setup-tablecreated' => 'The table was successfully created.',
 	# Default userinfo group
-	'group-userinfo'        => 'Account reviewers',
-	'group-userinfo-member' => 'Account reviewer',
-	'grouppage-userinfo'    => 'Project:UserInfo',
+	'group-userinfo'        => 'User information',
+	'group-userinfo-member' => 'User information',
+	'grouppage-userinfo'    => 'Project:User information',
 	# Default checkip group
-	'group-checkip'        => 'IP checkers',
-	'group-checkip-member' => 'Big brother',
-	'grouppage-checkip'    => 'Project:CheckIP',
+	'group-checkip'        => 'Check IP',
+	'group-checkip-member' => 'Check IP',
+	'grouppage-checkip'    => 'Project:Check IP',
 );
