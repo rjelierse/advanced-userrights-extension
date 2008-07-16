@@ -36,7 +36,7 @@ $wgExtensionMessagesFiles['AdvancedUserrights'] = dirname (__FILE__) . '/Advance
 $wgSpecialPages['AdvancedUserrights'] = 'AdvancedUserrightsPage';
 $wgSpecialPageGroups['AdvancedUserrights'] = 'permissions';
 $wgAutoloadClasses['AdvancedUserrightsPage'] = dirname (__FILE__) . '/AdvancedUserrights.body.php';
-$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('AdvancedUserrights', 'userrights', 'userrights-editusergroup'));
+$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('AdvancedUserrights', 'userrights', 'userrights'));
 
 $wgExtensionMessagesFiles['UserInformation'] = dirname (__FILE__) . '/UserInformation.i18n.php';
 $wgSpecialPages['UserInformation'] = 'UserInformationPage';
@@ -49,7 +49,7 @@ $wgGroupPermissions['checkip']['checkip'] = true;
 $wgGroupPermissions['checkip']['userinfo'] = true;
 $wgHooks['AddNewAccount'][] = 'efUpdateCheckIPTable';
 $wgHooks['AutoAuthenticate'][] = 'efUpdateCheckIPTable';
-$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('UserInformation', 'userinfo', 'userinfo-details'));
+$wgHooks['SkinTemplateNavUrls'][] = array ('efSkinTemplateNavUrls', array ('UserInformation', 'userinfo', 'userinfo'));
 
 require_once dirname (__FILE__) . '/AdvancedUserrights.hooks.php';
 

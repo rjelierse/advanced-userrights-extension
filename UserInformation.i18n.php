@@ -24,7 +24,7 @@ if (!defined ('MEDIAWIKI'))
 $messages = array ();
 
 $messages['en'] = array (
-	# User information
+	// User information
 	'userinformation'            => 'User information',
 	'userinfo-viewing'           => 'Viewing user information: $1', // $1 gets replaced by username.
 	'userinfo-details'           => 'User details',
@@ -35,23 +35,23 @@ $messages['en'] = array (
 	'userinfo-noemailconfirmed'  => 'This user has not yet confirmed it\'s e-mail address.',
 	'userinfo-hasemailconfirmed' => 'This user has confirmed it\'s e-mail address at $1.', // $1 gets replaced by date of confirmation.
 	'userinfo-editcount'         => 'Number of edits:',
-	# IP-address listing
+	// IP-address listing
 	'userinfo-iplist'     => 'List of known IP-addresses',
 	'userinfo-noipsfound' => 'No IP-addresses were found for this user.',
 	'userinfo-ipaddress'  => 'IP-address',
 	'userinfo-lastseen'   => 'Last seen at',
-	# IP-address setup
+	// IP-address setup
 	'userinfo-setup'              => 'IP-address listing setup',
 	'userinfo-nosetup'            => 'The database has not yet been prepared for using checkip, please complete the <span class="plainlinks">[$1 setup]</span>.', // $1 gets replaced by the link to the setup-page.
 	'userinfo-setup-explain'      => 'A table must be added to the database before IP-address logging can work.',
 	'userinfo-setup-button'       => 'Create table',
 	'userinfo-setup-tableexists'  => 'The table already exists.',
 	'userinfo-setup-tablecreated' => 'The table was successfully created.',
-	# Default userinfo group
+	// Default userinfo group
 	'group-userinfo'        => 'User information',
 	'group-userinfo-member' => 'User information',
 	'grouppage-userinfo'    => 'Project:User information',
-	# Default checkip group
+	// Default checkip group
 	'group-checkip'        => 'Check IP',
 	'group-checkip-member' => 'Check IP',
 	'grouppage-checkip'    => 'Project:Check IP',
