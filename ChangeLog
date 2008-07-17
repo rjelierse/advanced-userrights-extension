@@ -1,3 +1,7 @@
+2008-07-17  Raymond Jelierse  <eagletitan@gmail.com>
+	* AdvancedUserrights.hooks.php (efUpdateCheckIPTable): Added check for
+	$auEnableCheckIP.
+
 2008-07-16  Raymond Jelierse  <eagletitan@gmail.com>
 	* AdvancedUserrights.hooks.php (efSkinTemplateNavUrls): Fixed list of
 	parameters as MediaWiki does not allow more than one user supplied
