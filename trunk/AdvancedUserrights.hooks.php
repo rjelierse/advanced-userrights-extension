@@ -48,7 +48,7 @@ function efUpdateCheckIPTable (&$user, &$byEmail = false)
 {
 	global $auEnableCheckIP, $wgOut;
 	
-	if ($auEnableCheckIP)
+	if ($auEnableCheckIP === false)
 	{
 		$wgOut->debug ("CheckIP disabled. Returning.\n\n");
 		return true;
